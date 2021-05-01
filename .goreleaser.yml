@@ -1,0 +1,26 @@
+before:
+  hooks:
+    # You may remove this if you don't use go modules.
+    - go mod download
+builds:
+-
+  # Path to main.go file or main package. Default is `.`.
+  main: ./cmd/git-bump/main.go
+  env:
+  - CGO_ENABLED=0
+    # GOOS list to build for. Defaults are darwin and linux.
+    # For more info: https://golang.org/doc/install/source#environment
+  goos:
+  - darwin
+  - linux
+  - windows
+  ldflags: -s -w -X github.com/erdaltsksn/cui.appVersion={{.Tag}}
+
+brews:
+  -
+    tap:
+      owner: erdaltsksn
+      name: homebrew-tap
+    folder: Formula
+    homepage: "{{ .GitURL }}"
+    description: Semantic Version Bumper that uses Git Tags
